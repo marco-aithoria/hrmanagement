@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+require('dotenv').config();
 const { initDatabase } = require('./database');
 
 const app = express();
@@ -11,7 +12,7 @@ initDatabase();
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173', // Vite dev server
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Vite dev server
   credentials: true
 }));
 

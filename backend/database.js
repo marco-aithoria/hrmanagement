@@ -15,8 +15,9 @@ const createTables = () => {
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       email TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
+      password TEXT,
       role TEXT NOT NULL DEFAULT 'employee',
+      auth_provider TEXT DEFAULT 'local',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
