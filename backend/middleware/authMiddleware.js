@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const jwksClient = require('jwks-client');
+const JwksClient = require('jwks-client').default;
 const entraConfig = require('../config/entraConfig');
 
 // Create JWKS client for token validation
-const client = jwksClient({
+const client = JwksClient({
   jwksUri: entraConfig.jwksUri,
   requestHeaders: {}, // Optional
   timeout: 30000, // Defaults to 30s

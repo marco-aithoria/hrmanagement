@@ -38,21 +38,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      // First check if we have an MSAL account with access token
+      // First check if we have an MSAL account with ID token
       if (account) {
         try {
           const tokenResponse = await instance.acquireTokenSilent({
-            ...loginRequest,
+            scopes: ['openid', 'profile', 'email'],
             account: account,
           });
           
-          // Set the authorization header for all axios requests
-          axios.defaults.headers.common['Authorization'] = `Bearer ${tokenResponse.accessToken}`;
-          
-          // Validate the token with our backend
-          const response = await axios.post('/auth/entra/validate');
-          setUser(response.data.user);
-          return;
+          // Use ID token instead of access token for our backend
+          const idToken = tokenResponse.idToken;
+          if (idToken) {
+            // Set the authorization header for all axios requests
+            axios.defaults.headers.common['Authorization'] = `Bearer ${idToken}`;
+            
+            // Validate the token with our backend
+            const response = await axios.post('/auth/entra/validate');
+            setUser(response.data.user);
+            return;
+          }
         } catch (error) {
           console.error('MSAL token error:', error);
           // Fall through to session-based auth check
@@ -74,11 +78,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithEntraId = async () => {
     try {
       setLoading(true);
-      const loginResponse = await instance.loginPopup(loginRequest);
+      const loginResponse = await instance.loginPopup({
+        scopes: ['openid', 'profile', 'email']
+      });
       
-      if (loginResponse.accessToken) {
-        // Set the authorization header
-        axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.accessToken}`;
+      if (loginResponse.idToken) {
+        // Set the authorization header with ID token
+        axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.idToken}`;
         
         // Validate token with backend and get/create user
         const response = await axios.post('/auth/entra/validate');

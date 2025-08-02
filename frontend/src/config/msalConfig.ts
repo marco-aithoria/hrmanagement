@@ -1,7 +1,5 @@
-import { Configuration, PopupRequest } from '@azure/msal-browser';
-
 // MSAL configuration
-export const msalConfig: Configuration = {
+export const msalConfig = {
   auth: {
     clientId: import.meta.env.VITE_ENTRA_CLIENT_ID || '',
     authority: import.meta.env.VITE_ENTRA_AUTHORITY || 'https://login.microsoftonline.com/aithoria.onmicrosoft.com',
@@ -37,9 +35,9 @@ export const msalConfig: Configuration = {
   }
 };
 
-// Add scopes here for ID token to be used at Microsoft Graph API endpoints.
-export const loginRequest: PopupRequest = {
-  scopes: ['openid', 'profile', 'email', 'User.Read'],
+// Add scopes here for ID token to be used for authentication with our backend.
+export const loginRequest = {
+  scopes: ['openid', 'profile', 'email'],
 };
 
 // Add the endpoints here for Microsoft Graph API services you'd like to use.

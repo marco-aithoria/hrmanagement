@@ -10,8 +10,8 @@ const entraConfig = {
   scopes: ['openid', 'profile', 'email', 'User.Read'],
   
   // JWT validation settings
-  jwksUri: `https://login.microsoftonline.com/${process.env.ENTRA_TENANT_NAME || 'aithoria.onmicrosoft.com'}/discovery/v2.0/keys`,
-  issuer: `https://login.microsoftonline.com/${process.env.ENTRA_TENANT_ID || process.env.ENTRA_TENANT_NAME || 'aithoria.onmicrosoft.com'}/v2.0`,
+  jwksUri: `https://login.microsoftonline.com/${process.env.ENTRA_TENANT_ID || 'aithoria.onmicrosoft.com'}/discovery/v2.0/keys`,
+  issuer: `https://login.microsoftonline.com/${process.env.ENTRA_TENANT_ID || 'aithoria.onmicrosoft.com'}/v2.0`,
   audience: process.env.ENTRA_CLIENT_ID
 };
 
